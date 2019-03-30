@@ -19,6 +19,7 @@ export default class ModalWrapper extends React.Component {
     id: PropTypes.string,
     buttonTriggerText: PropTypes.node,
     buttonTriggerClassName: PropTypes.string,
+    buttonTriggerComponent: PropTypes.element,
     modalLabel: PropTypes.string,
     modalHeading: PropTypes.string,
     modalText: PropTypes.string,
@@ -80,6 +81,7 @@ export default class ModalWrapper extends React.Component {
       onKeyDown,
       buttonTriggerText,
       buttonTriggerClassName,
+      buttonTriggerComponent,
       renderTriggerButtonIcon,
       triggerButtonIcon,
       triggerButtonIconDescription,
@@ -99,6 +101,27 @@ export default class ModalWrapper extends React.Component {
       onRequestSubmit: this.handleOnRequestSubmit,
     };
 
+    const buttonTrigger = buttonTriggerComponent ? (
+      React.cloneElement(buttonTriggerComponent, {
+        className: buttonTriggerClassName,
+        disabled: disabled,
+        onClick: this.handleOpen,
+        inputref: this.triggerButton,
+      })
+    ) : (
+      <Button
+        className={buttonTriggerClassName}
+        disabled={disabled}
+        kind={triggerButtonKind}
+        renderIcon={renderTriggerButtonIcon}
+        icon={triggerButtonIcon}
+        iconDescription={triggerButtonIconDescription}
+        onClick={this.handleOpen}
+        ref={this.triggerButton}>
+        {buttonTriggerText}
+      </Button>
+    );
+
     return (
       <div
         role="presentation"
@@ -108,17 +131,7 @@ export default class ModalWrapper extends React.Component {
             onKeyDown(evt);
           }
         }}>
-        <Button
-          className={buttonTriggerClassName}
-          disabled={disabled}
-          kind={triggerButtonKind}
-          renderIcon={renderTriggerButtonIcon}
-          icon={triggerButtonIcon}
-          iconDescription={triggerButtonIconDescription}
-          onClick={this.handleOpen}
-          ref={this.triggerButton}>
-          {buttonTriggerText}
-        </Button>
+        {buttonTrigger}
         <Modal {...props}>{children}</Modal>
       </div>
     );
