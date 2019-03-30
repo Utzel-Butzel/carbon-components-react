@@ -15,6 +15,7 @@ import { action } from '@storybook/addon-actions';
 import { withKnobs, boolean, text, select } from '@storybook/addon-knobs';
 import { settings } from 'carbon-components';
 import ModalWrapper from '../ModalWrapper';
+import Button from '../Button';
 import TextInput from '../TextInput';
 import Select from '../Select';
 import SelectItem from '../SelectItem';
@@ -46,13 +47,29 @@ const iconMap = {
   Search16: props => <Search16 className={`${prefix}--btn__icon`} {...props} />,
 };
 
+const buttonTrigger = {
+  None: 'None',
+  'Custom Trigger Component': 'customTrigger',
+};
+
+const buttonTriggerMap = {
+  customTrigger: <Button kind="danger">Custom Trigger</Button>,
+};
+
 const props = () => {
   const iconToUse = iconMap[select('Icon (icon)', icons, 'none')];
+  const buttonTriggerToUse =
+    buttonTriggerMap[
+      select('Custom Trigger (buttonTriggerComponent)', buttonTrigger, 'none')
+    ];
+
   return {
     className: 'some-class',
     disabled: boolean('Disable the launcher button (disabled)', false),
     passiveModal: boolean('Without footer (passiveModal)', false),
     danger: boolean('Danger mode (danger)', false),
+    buttonTriggerComponent:
+      typeof buttonTriggerToUse !== 'function' && buttonTriggerToUse,
     buttonTriggerText: text(
       'The text in the trigger button (buttonTriggerText)',
       'Launch Modal'

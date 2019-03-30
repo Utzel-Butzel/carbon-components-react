@@ -106,7 +106,7 @@ export default class ModalWrapper extends React.Component {
         className: buttonTriggerClassName,
         disabled: disabled,
         onClick: this.handleOpen,
-        inputref: this.triggerButton,
+        ref: this.triggerButton,
       })
     ) : (
       <Button

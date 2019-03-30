@@ -8,6 +8,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import ModalWrapper from '../ModalWrapper';
+import Link from '../Link';
 
 describe('ModalWrapper', () => {
   let mockProps = {};
@@ -72,6 +73,19 @@ describe('ModalWrapper', () => {
     expect(wrapper.state('isOpen')).toBe(true);
 
     wrapper.find({ children: mockProps.primaryButtonText }).simulate('click');
+    expect(wrapper.state('isOpen')).toBe(true);
+  });
+
+  it('should display custom trigger button', () => {
+    mockProps.handleSubmit = jest.fn(() => false);
+    const wrapper = mount(
+      <ModalWrapper
+        {...mockProps}
+        buttonTriggerComponent={<Link id="link">Open</Link>}>
+        <p className="bx--modal-content__text">Text</p>
+      </ModalWrapper>
+    );
+    wrapper.find('a').simulate('click');
     expect(wrapper.state('isOpen')).toBe(true);
   });
 });
